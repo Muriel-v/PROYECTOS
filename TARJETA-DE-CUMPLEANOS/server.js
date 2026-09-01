@@ -204,19 +204,19 @@ app.use(session({
 app.use('/uploads', express.static(UPLOADS_DIR, { maxAge: '7d' }));
 app.use('/assets', express.static(path.join(PUBLIC_DIR, 'assets')));
 
-app.get('/', (_req, res) => {
+app.get('/', (req, res) => {
   const { settings } = publicInvitationPayload();
 
-  const origin = process.env.PUBLIC_URL || `http://localhost:${PORT}`;
+  const origin =
+    process.env.PUBLIC_URL ||
+    `${req.protocol}://${req.get('host')}`;
 
   const cover = settings.coverImage
     ? new URL(settings.coverImage, origin).toString()
     : `${origin}/assets/social-preview.svg`;
 
-  const html = fs.readFileSync(
-    path.join(PUBLIC_DIR, 'index.html'),
-    'utf8'
-  )
+  const html = fs
+    .readFileSync(path.join(PUBLIC_DIR, 'index.html'), 'utf8')
     .replaceAll(
       '{{TITLE}}',
       escapeHtml(`Cumpleaños de ${settings.celebrantName}`)
@@ -225,22 +225,10 @@ app.get('/', (_req, res) => {
       '{{DESCRIPTION}}',
       escapeHtml(settings.previewText || settings.personalMessage)
     )
-    .replaceAll(
-      '{{IMAGE}}',
-      escapeHtml(cover)
-    )
-    .replaceAll(
-      '{{URL}}',
-      escapeHtml(origin)
-    );
+    .replaceAll('{{IMAGE}}', escapeHtml(cover))
+    .replaceAll('{{URL}}', escapeHtml(origin));
 
-  res.set(
-    'Cache-Control',
-    'no-store, no-cache, must-revalidate, proxy-revalidate'
-  );
-  res.set('Pragma', 'no-cache');
-  res.set('Expires', '0');
-
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
   res.type('html').send(html);
 });
 
