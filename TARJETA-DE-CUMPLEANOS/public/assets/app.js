@@ -6,8 +6,16 @@ const $$ = (selector) => [...document.querySelectorAll(selector)];
 init();
 
 async function init() {
-  const response = await fetch('/api/invitation');
+  const response = await fetch('/api/invitation', {
+    cache: 'no-store'
+  });
+
+  if (!response.ok) {
+    throw new Error('No se pudo cargar la invitación.');
+  }
+
   const data = await response.json();
+
   state.settings = data.settings;
   applyTheme(data.settings);
   renderInvitation();

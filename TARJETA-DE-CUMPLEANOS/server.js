@@ -206,18 +206,52 @@ app.use('/assets', express.static(path.join(PUBLIC_DIR, 'assets')));
 
 app.get('/', (_req, res) => {
   const { settings } = publicInvitationPayload();
+
   const origin = process.env.PUBLIC_URL || `http://localhost:${PORT}`;
-  const cover = settings.coverImage ? new URL(settings.coverImage, origin).toString() : `${origin}/assets/social-preview.svg`;
-  const html = fs.readFileSync(path.join(PUBLIC_DIR, 'index.html'), 'utf8')
-    .replaceAll('{{TITLE}}', escapeHtml(`Cumpleaños de ${settings.celebrantName}`))
-    .replaceAll('{{DESCRIPTION}}', escapeHtml(settings.previewText || settings.personalMessage))
-    .replaceAll('{{IMAGE}}', escapeHtml(cover))
-    .replaceAll('{{URL}}', escapeHtml(origin));
+
+  const cover = settings.coverImage
+    ? new URL(settings.coverImage, origin).toString()
+    : `${origin}/assets/social-preview.svg`;
+
+  const html = fs.readFileSync(
+    path.join(PUBLIC_DIR, 'index.html'),
+    'utf8'
+  )
+    .replaceAll(
+      '{{TITLE}}',
+      escapeHtml(`Cumpleaños de ${settings.celebrantName}`)
+    )
+    .replaceAll(
+      '{{DESCRIPTION}}',
+      escapeHtml(settings.previewText || settings.personalMessage)
+    )
+    .replaceAll(
+      '{{IMAGE}}',
+      escapeHtml(cover)
+    )
+    .replaceAll(
+      '{{URL}}',
+      escapeHtml(origin)
+    );
+
+  res.set(
+    'Cache-Control',
+    'no-store, no-cache, must-revalidate, proxy-revalidate'
+  );
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+
   res.type('html').send(html);
 });
 
 app.get('/admin', (_req, res) => res.sendFile(path.join(PUBLIC_DIR, 'admin.html')));
-app.get('/api/invitation', (_req, res) => res.json(publicInvitationPayload()));
+app.get('/api/invitation', (_req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+
+  res.json(publicInvitationPayload());
+});
 
 app.post('/api/rsvp', async (req, res) => {
   const fullName = String(req.body.fullName || '').trim();
