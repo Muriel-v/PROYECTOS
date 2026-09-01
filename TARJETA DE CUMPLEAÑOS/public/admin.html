@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administracion de invitacion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles.css?v=20260901">
+  <script defer src="/assets/admin.js?v=20260901"></script>
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <section id="loginPanel" class="admin-login">
+      <h1>Panel de administracion</h1>
+      <p>Inicia sesion para editar la invitacion y revisar confirmaciones.</p>
+      <form id="loginForm" class="admin-form compact">
+        <label>Usuario <input name="user" autocomplete="username" required value="admin"></label>
+        <label>Contrasena <input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="btn primary" type="submit">Entrar</button>
+      </form>
+      <p id="loginError" class="form-error"></p>
+    </section>
+
+    <section id="adminPanel" class="admin-panel" hidden>
+      <header class="admin-header">
+        <div>
+          <p class="section-kicker">Invitacion editable</p>
+          <h1>Centro de control</h1>
+        </div>
+        <div class="admin-actions">
+          <a class="btn secondary" href="/" target="_blank">Ver invitacion</a>
+          <button id="logoutButton" class="btn ghost" type="button">Salir</button>
+        </div>
+      </header>
+
+      <section class="stats-grid" id="statsGrid"></section>
+
+      <section class="admin-card">
+        <h2>Informacion del cumpleanos</h2>
+        <form id="settingsForm" class="admin-form settings-grid">
+          <label>Nombre del cumpleanero <input name="celebrantName"></label>
+          <label>Frase principal <input name="invitationTitle"></label>
+          <label>Titulo destacado <input name="mainPhrase"></label>
+          <label>Mensaje personalizado <textarea name="personalMessage"></textarea></label>
+          <label>Fecha <input name="eventDate" type="date"></label>
+          <label>Hora <input name="eventTime" type="time"></label>
+          <label>Celebracion <input name="celebration"></label>
+          <label>Lugar <input name="venueName"></label>
+          <label>Direccion <input name="address"></label>
+          <label>Referencia <input name="locationReference"></label>
+          <label>Google Maps URL <input name="mapsUrl" type="url"></label>
+          <label>Informacion adicional <textarea name="extraInfo"></textarea></label>
+          <label>Mensaje tras confirmar <textarea name="confirmationMessage"></textarea></label>
+          <label>Texto vista previa WhatsApp <input name="previewText"></label>
+          <label>Tema <input name="theme" placeholder="elegante, neon, flores..."></label>
+          <label>Fuente
+            <select name="fontFamily">
+              <option>Poppins</option>
+              <option>Inter</option>
+              <option>Montserrat</option>
+              <option>Playfair Display</option>
+              <option>Cormorant Garamond</option>
+            </select>
+          </label>
+          <label>Color principal <input name="primaryColor" type="color"></label>
+          <label>Color secundario <input name="secondaryColor" type="color"></label>
+          <label>Color de fondo <input name="backgroundColor" type="color"></label>
+          <label>Color tarjetas <input name="surfaceColor" type="color"></label>
+          <label>Color texto <input name="textColor" type="color"></label>
+          <label>Imagen de portada URL <input name="coverImage" placeholder="/uploads/foto.jpg o URL externa"></label>
+          <button class="btn primary form-wide" type="submit">Guardar cambios</button>
+          <p id="settingsResult" class="form-wide save-result"></p>
+        </form>
+      </section>
+
+      <section class="admin-card">
+        <h2>Fotografias</h2>
+        <form id="photoForm" class="upload-row">
+          <input name="photos" type="file" accept="image/*" multiple>
+          <button class="btn secondary" type="submit">Subir fotos</button>
+        </form>
+        <div id="adminPhotos" class="admin-photo-grid"></div>
+      </section>
+
+      <section class="admin-card">
+        <h2>Confirmaciones</h2>
+        <div id="notifications" class="notifications"></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th>Acompanantes</th>
+                <th>Mensaje</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody id="rsvpRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

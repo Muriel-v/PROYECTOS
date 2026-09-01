@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  <meta property="og:image" content="{{IMAGE}}">
+  <meta property="og:url" content="{{URL}}">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;700;800&family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600;700;800&family=Yeseva+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles.css?v=20260901">
+  <script defer src="/assets/app.js?v=20260901"></script>
+</head>
+<body>
+  <main id="invite" class="invite-shell">
+    <section class="hero section-reveal">
+      <div class="sparkles" aria-hidden="true"></div>
+      <div class="party-bunting" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="party-stars" aria-hidden="true"><i>✦</i><i>★</i><i>✦</i><i>★</i><i>✦</i></div>
+      <div class="party-bubbles" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="hero-media">
+        <div class="photo-ring" aria-hidden="true"></div>
+        <img id="coverImage" alt="Foto principal del cumpleanero">
+        <span class="photo-shine" aria-hidden="true"></span>
+      </div>
+      <div class="hero-copy">
+        <p id="invitationTitle" class="eyebrow"></p>
+        <h1 id="mainPhrase"></h1>
+        <p id="personalMessage" class="lead"></p>
+        <div class="event-card" aria-label="Fecha y hora del evento">
+          <div class="event-item"><small>FECHA</small><span id="datePill"></span></div>
+          <span class="event-divider" aria-hidden="true"></span>
+          <div class="event-item"><small>HORA</small><strong id="timePill"></strong></div>
+        </div>
+        <div class="hero-actions">
+          <a href="#rsvp" class="btn primary">Confirmar asistencia</a>
+          <button id="shareButton" class="btn secondary" type="button">Compartir invitacion</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="countdown-section section-reveal" aria-label="Cuenta regresiva">
+      <p class="section-kicker">Cuenta regresiva</p>
+      <h2 id="countdownTitle">Falta muy poco</h2>
+      <div id="countdown" class="countdown-grid">
+        <div><strong data-unit="days">0</strong><span>Dias</span></div>
+        <div><strong data-unit="hours">0</strong><span>Horas</span></div>
+        <div><strong data-unit="minutes">0</strong><span>Min</span></div>
+        <div><strong data-unit="seconds">0</strong><span>Seg</span></div>
+      </div>
+    </section>
+
+    <section class="info-section section-reveal">
+      <p class="section-kicker">Detalles</p>
+      <h2>Informacion del evento</h2>
+      <div class="detail-grid">
+        <article><span>Fecha</span><strong id="detailDate"></strong></article>
+        <article><span>Hora</span><strong id="detailTime"></strong></article>
+        <article><span>Lugar</span><strong id="detailVenue"></strong></article>
+      </div>
+      <p id="detailExtra" class="wide-note"></p>
+    </section>
+
+    <section class="location-section section-reveal">
+      <p class="section-kicker">Ubicacion</p>
+      <h2 id="locationName"></h2>
+      <p id="locationAddress"></p>
+      <p id="locationReference" class="wide-note"></p>
+      <div id="mapEmbed" class="map-frame"></div>
+      <a id="mapsButton" class="btn primary maps-button" target="_blank" rel="noreferrer">Como llegar</a>
+    </section>
+
+    <section id="rsvp" class="rsvp-section section-reveal">
+      <p class="section-kicker">RSVP</p>
+      <h2>Confirma tu asistencia</h2>
+      <form id="rsvpForm" class="rsvp-form">
+        <label>Nombre completo
+          <input name="fullName" type="text" autocomplete="name" required placeholder="Tu nombre">
+        </label>
+        <fieldset>
+          <legend>¿Asistirás al cumpleaños?</legend>
+          <div class="rsvp-options">
+            <label><input type="radio" name="status" value="yes" required> <span>Si, asistire</span></label>
+            <label><input type="radio" name="status" value="no"> <span>No podre asistir</span></label>
+            <label><input type="radio" name="status" value="maybe"> <span>Aun no estoy seguro</span></label>
+          </div>
+        </fieldset>
+        <label>Numero de acompanantes
+          <select name="companions">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </label>
+        <label>Mensaje para el cumpleanero
+          <textarea name="message" rows="4" placeholder="Escribe un mensaje opcional"></textarea>
+        </label>
+        <button class="btn primary submit-button" type="submit">Confirmar asistencia</button>
+      </form>
+      <div id="rsvpResult" class="result-message" hidden></div>
+    </section>
+  </main>
+</body>
+</html>
