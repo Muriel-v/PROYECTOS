@@ -205,30 +205,42 @@ app.use('/uploads', express.static(UPLOADS_DIR, { maxAge: '7d' }));
 app.use('/assets', express.static(path.join(PUBLIC_DIR, 'assets')));
 
 app.get('/', (req, res) => {
-  const { settings } = publicInvitationPayload();
+  const { settings, photos } = publicInvitationPayload();
 
-  const origin =
-    process.env.PUBLIC_URL ||
-    `${req.protocol}://${req.get('host')}`;
+  const origin = `${req.protocol}://${req.get('host')}`;
 
-  const cover = settings.coverImage
-    ? new URL(settings.coverImage, origin).toString()
-    : `${origin}/assets/social-preview.svg`;
+  const mainPhoto =
+    photos.find((photo) => photo.isMain) ||
+    photos[0] ||
+    null;
+
+  const imagePath =
+    settings.coverImage ||
+    mainPhoto?.url ||
+    '/assets/social-preview.svg';
+
+  const cover = new URL(imagePath, origin).toString();
+
+  const title = `Cumpleaños de ${settings.celebrantName}`;
+
+  const description =
+    settings.previewText ||
+    settings.personalMessage ||
+    'Te invito a celebrar este día tan especial conmigo.';
 
   const html = fs
     .readFileSync(path.join(PUBLIC_DIR, 'index.html'), 'utf8')
-    .replaceAll(
-      '{{TITLE}}',
-      escapeHtml(`Cumpleaños de ${settings.celebrantName}`)
-    )
-    .replaceAll(
-      '{{DESCRIPTION}}',
-      escapeHtml(settings.previewText || settings.personalMessage)
-    )
+    .replaceAll('{{TITLE}}', escapeHtml(title))
+    .replaceAll('{{DESCRIPTION}}', escapeHtml(description))
     .replaceAll('{{IMAGE}}', escapeHtml(cover))
-    .replaceAll('{{URL}}', escapeHtml(origin));
+    .replaceAll('{{URL}}', escapeHtml(`${origin}${req.originalUrl}`));
 
-  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  res.set({
+    'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
+
   res.type('html').send(html);
 });
 
