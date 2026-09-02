@@ -78,49 +78,16 @@ function renderSettings(settings) {
 function setupSettings() {
   $('#settingsForm').onsubmit = async (event) => {
     event.preventDefault();
-
-    const resultBox = $('#settingsResult');
-    const button = event.currentTarget.querySelector('button[type="submit"]');
-
-    const payload = Object.fromEntries(
-      new FormData(event.currentTarget).entries()
-    );
-
-    button.disabled = true;
-    button.textContent = 'Guardando...';
-
-    resultBox.textContent = '';
-
-    try {
-      const result = await fetchJson('/api/admin/settings', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-
-      dashboard.settings = result.settings;
-
-      applyAdminTheme(result.settings);
-      renderSettings(result.settings);
-
-      resultBox.textContent = '✓ Cambios guardados correctamente.';
-
-      setTimeout(() => {
-        resultBox.textContent = '';
-      }, 3000);
-
-    } catch (error) {
-
-      resultBox.textContent = `✕ ${error.message}`;
-
-    } finally {
-
-      button.disabled = false;
-      button.textContent = 'Guardar cambios';
-
-    }
+    const payload = Object.fromEntries(new FormData(event.currentTarget).entries());
+    const result = await fetchJson('/api/admin/settings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    dashboard.settings = result.settings;
+    applyAdminTheme(result.settings);
+    $('#settingsResult').textContent = 'Cambios guardados correctamente.';
+    setTimeout(() => $('#settingsResult').textContent = '', 2500);
   };
 }
 
